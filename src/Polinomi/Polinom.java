@@ -1,8 +1,6 @@
 package Polinomi;
 
-import java.security.KeyPair;
 import java.util.Arrays;
-import java.util.Map;
 
 public class Polinom {
     private int n;
@@ -80,8 +78,7 @@ public class Polinom {
 
     private void ispraviStepen(){
         for (int i = n; i >=0; i--) {
-            if (koeficijenti[i] == 0) continue;
-            else{
+            if(!(koeficijenti[i] == 0)){
                 n = i;
                 return;
             }
