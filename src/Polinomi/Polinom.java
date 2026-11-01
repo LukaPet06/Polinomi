@@ -228,14 +228,14 @@ public class Polinom {
             provereneNule = true;
         }
         Polinom polinom = this;
-        boolean zavresnaProvera = false;
+        boolean zavrsenaProvera = false;
 
-        while (!zavresnaProvera){
+        while (!zavrsenaProvera){
             boolean pronadjenaNula = false;
             TreeSet<Double> deliociSlobodanClan = Delioci.DeliociBroja(polinom.koeficijenti[0]);
             TreeSet<Double> deliociNajvisiStepen = Delioci.DeliociBroja(polinom.koeficijenti[polinom.n]);
             for (Double p:deliociSlobodanClan) {
-                if (zavresnaProvera||pronadjenaNula){
+                if (zavrsenaProvera||pronadjenaNula){
                     break;
                 }
 
@@ -246,7 +246,7 @@ public class Polinom {
                         pronadjenaNula = true;
                         polinom = rezultat[0];
                         if (polinom.n ==0){
-                            zavresnaProvera = true;
+                            zavrsenaProvera = true;
 
                         }
                         break;
@@ -255,7 +255,7 @@ public class Polinom {
 
             }
             if(!pronadjenaNula){
-                zavresnaProvera = true;
+                zavrsenaProvera = true;
 
             }
         }
