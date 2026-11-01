@@ -1,5 +1,6 @@
 package Polinomi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Polinom {
@@ -75,7 +76,66 @@ public class Polinom {
         }
         return levi;
     }
+    public static Polinom[] hornerovaSema(final Polinom polinom,final double potencijalnaNula){
+        Polinom kolicnik = new Polinom(polinom.n-1);
+        Polinom ostatak = new Polinom(0);
+        kolicnik.koeficijenti[kolicnik.n] = polinom.koeficijenti[polinom.n];
+        for (int i = kolicnik.n; i >=1 ; i--) {
+            kolicnik.koeficijenti[i-1] = kolicnik.koeficijenti[i]*potencijalnaNula + polinom.koeficijenti[i];
+        }
+        ostatak.koeficijenti[0] = kolicnik.koeficijenti[0]*potencijalnaNula+polinom.koeficijenti[0];
 
+        Polinom[] rezultat = new Polinom[2];
+        rezultat[0] = kolicnik;
+        rezultat[1] = ostatak;
+        return rezultat;
+
+    }
+    public Double[] pronadjiNule(){
+        if (this.n == 0){
+            if (this.koeficijenti[0] == 0){
+                throw new RuntimeException("Polinom Stepena 0 i koef. 0 ima beskonacno nula");
+            }
+            else {
+                throw new RuntimeException("Polinom stepena 0 nema nule");
+            }
+        }
+        Polinom polinom = this;
+        ArrayList<Double> nuleList = new ArrayList<Double>();//Polinom moze imati najvise n nula
+
+        double[] deliociSlobodanClan = Delioci.DeliociBroja(polinom.koeficijenti[0]); //p
+        double[] deliociNajvisiStepen = Delioci.DeliociBroja(polinom.koeficijenti[polinom.n]); //q
+
+        boolean doneFlag = false;
+        //p/q potencijalna nula
+        for (int i = 0; i < deliociSlobodanClan.length; i++) {
+            if (doneFlag){
+                break;
+            }
+            for (int j = 0; j < deliociNajvisiStepen.length; j++) {
+                Polinom[] rezultat = Polinom.hornerovaSema(polinom, deliociSlobodanClan[i] /deliociNajvisiStepen[j]);
+                if (rezultat[1].koeficijenti[0] == 0){
+                    nuleList.add(deliociSlobodanClan[i] /deliociNajvisiStepen[j]);
+                    polinom = rezultat[0];
+                    if (polinom.n ==0){
+                        doneFlag = true;
+                        break;
+                    }
+                    deliociSlobodanClan = Delioci.DeliociBroja(polinom.koeficijenti[0]);
+                    deliociNajvisiStepen = Delioci.DeliociBroja(polinom.koeficijenti[polinom.n]);
+                    i = 0;
+                    j = 0;
+                    break;
+                }
+            }
+        }
+        Double[] nule = new Double[nuleList.size()];
+        for (int i = 0; i < nule.length; i++) {
+            nule[i] = nuleList.get(i);
+        }
+
+        return nule;
+    }
     private void ispraviStepen(){
         for (int i = n; i >=0; i--) {
             if(!(koeficijenti[i] == 0)){
