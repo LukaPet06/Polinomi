@@ -296,16 +296,37 @@ public class Polinom {
         String opis = "P("+n+"):";
         for(int i = n;i>0;i--){
             if(koeficijenti[i] == 0) continue;
-            opis+= String.format("%.2f",koeficijenti[i])+"x^"+i;
+            if (koeficijenti[i] != 1) {
+                opis += String.format("%.2f",Math.abs(koeficijenti[i]));
+            }
+            opis+= "x";
             if(i>1){
-                opis+=" + ";
+                opis+="^"+i;
+                if (koeficijenti[i-1]>=0){
+                    opis += " + ";
+                }
+                else {
+                    opis += " - ";
+
+                }
+
             }
         }
         if(koeficijenti.length >1 && koeficijenti[0]!=0 ){
-            opis+=String.format(" + %.2f",koeficijenti[0]);
+            if (koeficijenti[0]>=0){
+                opis += " + ";
+            }
+            else {
+                opis += " - ";
+
+            }
+            opis+=String.format("%.2f",Math.abs(koeficijenti[0]));
         }
         else if (koeficijenti.length == 1){
-            opis+=String.format("%.2f",koeficijenti[0]);
+            if (koeficijenti[0] < 0) {
+                opis += " - ";
+            }
+            opis+=String.format("%.2f",Math.abs(koeficijenti[0]));
         }
 
         if (!this.provereneNule){
@@ -319,8 +340,15 @@ public class Polinom {
         }
         else{
             opis+="\nNule polinoma: ";
-            for(Double nula:nule){
-                opis+=nula+", ";
+            for (int i = 0; i < nule.size(); i++)
+            {
+                opis += nule.get(i);
+                if (i<nule.size()-1) {
+                    opis += ", ";
+                }
+                else {
+                    opis += "\n";
+                }
             }
         }
         return opis;
